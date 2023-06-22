@@ -1,25 +1,27 @@
 #include <stdio.h>
+#include <stdint.h>
 
 typedef struct RGBData {
-        short R;
-        short G;
-        short B;
+        uint8_t R;
+        uint8_t G;
+        uint8_t B;
     } rgbdata;
 
 typedef struct YCCData {
-        float Y;
-        float Cb;
-        float Cr;
+        uint8_t Y;
+        uint8_t Cb;
+        uint8_t Cr;
     } yccdata;
 
-yccdata convert(rgbdata RGB){
+inline yccdata convert(rgbdata RGB){
     yccdata YCC;
+    register uint8_t Y, Cb, Cr;
 
-    YCC.Y  = 16  + ( 65.738 * RGB.R / 256.0) + (129.057 * RGB.G / 256.0) + ( 25.064 * RGB.B / 256.0);
-    YCC.Cb = 128 - ( 37.945 * RGB.R / 256.0) - ( 74.494 * RGB.G / 256.0) + (112.439 * RGB.B / 256.0);
-    YCC.Cr = 128 + (112.439 * RGB.R / 256.0) + ( 94.154 * RGB.G / 256.0) + ( 18.285 * RGB.B / 256.0);
+    Y  = (uint8_t)(16  + (uint16_t)(( 65.738 * RGB.R) + (129.057 * RGB.G) + ( 25.064 * RGB.B)) >> 8);
+    Cb = (uint8_t)(128 - (uint16_t)(( 37.945 * RGB.R) - ( 74.494 * RGB.G) + (112.439 * RGB.B)) >> 8);
+    Cr = (uint8_t)(128 + (uint16_t)((112.439 * RGB.R) + ( 94.154 * RGB.G) + ( 18.285 * RGB.B)) >> 8);
 
-    return YCC;
+    return YCC = (yccdata){.Y=Y, .Cr=Cr, .Cb=Cb};
 }
 
 int main(void){
@@ -28,7 +30,7 @@ int main(void){
 
     yccdata YCC = convert(RGB);
 
-    printf("Converted RGB value (%d, %d, %d) to YCC value (%.2f, %.2f, %.2f)",
+    printf("Converted RGB value (%d, %d, %d) to YCC value (%d, %d, %d)\n",
           RGB.R, RGB.G, RGB.B, YCC.Y, YCC.Cb, YCC.Cr);
 
 }
