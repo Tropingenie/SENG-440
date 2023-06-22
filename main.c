@@ -13,7 +13,15 @@ typedef struct YCCData {
         uint8_t Cr;
     } yccdata;
 
-inline yccdata convert(rgbdata RGB){
+extern inline void imagePreprocessing( void ){
+    return;
+}
+
+extern inline void postConversionProcessing( void ){
+    return;
+}
+
+extern inline yccdata convertRGBtoYCC(rgbdata RGB){
     yccdata YCC;
     register uint8_t Y, Cb, Cr;
 
@@ -24,11 +32,16 @@ inline yccdata convert(rgbdata RGB){
     return YCC = (yccdata){.Y=Y, .Cr=Cr, .Cb=Cb};
 }
 
+extern inline rgbdata obtainPixelValue( void ){
+    rgbdata RGB;
+    return RGB = (rgbdata){.R=0, .G=255, .B=0};
+}
+
 int main(void){
 
     rgbdata RGB = (rgbdata){.R=0, .G=255, .B=0};
 
-    yccdata YCC = convert(RGB);
+    yccdata YCC = convertRGBtoYCC(RGB);
 
     printf("Converted RGB value (%d, %d, %d) to YCC value (%d, %d, %d)\n",
           RGB.R, RGB.G, RGB.B, YCC.Y, YCC.Cb, YCC.Cr);
