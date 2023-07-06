@@ -1,4 +1,11 @@
+# Custom
 .vscode/
+*.pdf
+*.s
+*.png
+*.jpeg
+*.svg
+*.txt
 
 # Prerequisites
 *.d
