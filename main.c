@@ -3,8 +3,8 @@
 
 #define DEBUG 1
 
-#define OUTPUT_FILE "./prim_ycc_2.bmp"
-#define INPUT_FILE "./primaries.bmp"
+#define OUTPUT_FILE "./ycc_hills.bmp"
+#define INPUT_FILE "./hills.bmp"
 
 #if DEBUG == 1
 #include <stdlib.h>
@@ -64,10 +64,6 @@ image_t imagePreprocessing(FILE* file, image_t input_image){
     return input_image;
 }
 
-extern inline void postConversionProcessing( void ){
-    return;
-}
-
 extern inline yccdata convertRGBtoYCC(rgbdata RGB){
     yccdata YCC;
     register uint8_t Y, Cb, Cr, R, G, B;
@@ -81,11 +77,6 @@ extern inline yccdata convertRGBtoYCC(rgbdata RGB){
     Cr = (uint8_t)(128 + (((R << 7) - (R << 4) - ((G << 6) + (G << 5) - (G << 1)) - ((B << 4) + (B << 1))) >> 8));
 
     return YCC = (yccdata){.Y=Y, .Cb=Cb, .Cr=Cr};
-}
-
-extern inline rgbdata obtainPixelValue( void ){
-    rgbdata RGB;
-    return RGB = (rgbdata){.R=0, .G=255, .B=0}; // Placeholder
 }
 
 int main(void){
@@ -126,13 +117,10 @@ int main(void){
     printf("Starting conversion\n");
     #endif
 
-    // Seek to start of pixels
-    //fseek(f_input_RGB, input_image.first_pixel, SEEK_SET);
 
-    //uint8_t YCC_pixel_array[input_image.height][input_image.width * 3];
     rgbdata pixel;
     yccdata converted_pixel;
-    //int i = 0;
+
     int j = 0;
     for(i = 0; i < input_image.height; i++){
         for(j = 0; j < input_image.width; j++){
@@ -140,15 +128,9 @@ int main(void){
             fread(&pixel.G, 1, 1, f_input_RGB); //Replacing obtainPixelValue
             fread(&pixel.R, 1, 1, f_input_RGB); //
             converted_pixel = convertRGBtoYCC(pixel);
-    /*	    printf("Converted Pixel Value: Y:%d Cb:%d, Cr:%d\n", converted_pixel.Y, converted_pixel.Cb, converted_pixel.Cr);	    
-            YCC_pixel_array[i][j * 3] = converted_pixel.Y;
-            YCC_pixel_array[i][j * 3 + 1] = converted_pixel.Cb;
-            YCC_pixel_array[i][j * 3 + 2] = converted_pixel.Cr;
-    */
             fprintf(f_output_YCC, "%c%c%c", converted_pixel.Cr, converted_pixel.Cb, converted_pixel.Y); //Replacing postConversionProcessing
             
         }
-	//fprintf(f_output_YCC, "\n"); //Uncomment for YCC values
     }
 
     #if DEBUG == 1
@@ -157,26 +139,6 @@ int main(void){
 
     fclose(f_input_RGB);
     fclose(f_output_YCC);
-
-/* 
-    rgbdata RGB;
-    #if DEBUG == 1
-    srand(time(NULL));
-    RGB = (rgbdata){
-        .R = rand()%256,
-        .G = rand()%256,
-        .B = rand()%256
-    };
-    #else
-    RGB = obtainPixelValue();
-    #endif
-
-
-    yccdata YCC = convertRGBtoYCC(RGB);
-
-    printf("Converted RGB value (%d, %d, %d) to YCC value (%d, %d, %d)\n",RGB.R, RGB.G, RGB.B, YCC.Y, YCC.Cb, YCC.Cr);
-*/
-
 }
 
 
