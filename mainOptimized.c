@@ -39,12 +39,6 @@ image_t imagePreprocessing(FILE* file, image_t input_image){
     int image_data_address = 0;
     int width = 0;
     int height = 0;
-    int bit_depth = 0;
-    
-    #if DEBUG == 1
-    printf("Image Preprocessing:\n");
-    printf("Image type: %c%c\n", fgetc(file), fgetc(file));
-    #endif
     
     fseek(file, 10, SEEK_SET);
     fread(&image_data_address, 4, 1, file); //Location of pixel array
@@ -56,8 +50,6 @@ image_t imagePreprocessing(FILE* file, image_t input_image){
     fseek(file, 4, SEEK_CUR);
     fread(&width, 4, 1, file);
     fread(&height, 4, 1, file);
-    fseek(file, 2, SEEK_CUR);
-    fread(&bit_depth, 2, 1, file); //# of bits per pixel
     fseek(file, image_data_address, SEEK_SET);
     input_image.first_pixel = image_data_address;
     input_image.height = height;
