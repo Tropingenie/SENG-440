@@ -2,10 +2,7 @@
 Repo for storing the SENG 440 project code.
 
 ## Objective
-Provide a RGB to YCC colour conversion ASIP. Code will be written in C and compiled for an ARM processor.
-
-## Notes
-This code was compiled and ran on the Real ARM machine using telnet, following the instructions in the Announcement section on Brightspace. The arm processor used had architecture armv4tl.
+Provide a RGB to YCC colour conversion ASIP. Code will be written in C and compiled for an ARM processor with architecture armv4tl.
 
 ## Directions for running C code
 To run, please compile the mainOptimzed.c file with 
