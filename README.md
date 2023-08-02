@@ -19,6 +19,8 @@ Please run the code using ./main.exe
 
 If benchmark is set to 1, you should be presented with a total time and a conversion time in seconds.
 
+If desired, you may install valgrind callgrind and run it on the executable to view the instruction execution count.
+
 ## Sources
 https://sistenix.com/rgb2ycbcr.html
 
